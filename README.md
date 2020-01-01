@@ -11,3 +11,4 @@
 - Async calls: Duration: 828.66 ms, Billed Duration: 900 ms, Max Memory Used: 42 MB, Init Duration: 93.69 ms
 
 > Seems possible to save a lot of time and money using Go for lambda. 
+> See Python implementation comparison at: https://github.com/nick-uk/Python-Lambda-Cloudwatch/blob/master/README.md
