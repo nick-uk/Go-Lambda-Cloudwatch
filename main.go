@@ -141,34 +141,34 @@ func lambdaHandler() (lambdaRes, error) {
 
 	// sync
 	// This gives: Duration: 1644.97 ms, Billed Duration: 1700 ms, Max Memory Used: 54 MB, Init Duration: 93.69 ms
-	start := time.Now()
-	cpures = getCPU(client)
-	netres = getNET(client)
-	elapsed := time.Since(start).Seconds()
-	fmt.Printf("== Took " + strconv.FormatFloat(elapsed, 'f', 2, 64) + " secs ==\n\n")
-
-	// vs async
-	// This gives: Duration: 828.66 ms, Billed Duration: 900 ms, Max Memory Used: 42 MB
 	/*
-		var cpu = make(chan cpuMax)
-		var net = make(chan netPeak)
 		start := time.Now()
-		go func() {
-			cpu <- getCPU(client)
-		}()
-		go func() {
-			net <- getNET(client)
-		}()
-
-		for i := 0; i < 2; i++ {
-			select {
-			case cpures = <-cpu:
-			case netres = <-net:
-			}
-		}
+		cpures = getCPU(client)
+		netres = getNET(client)
 		elapsed := time.Since(start).Seconds()
 		fmt.Printf("== Took " + strconv.FormatFloat(elapsed, 'f', 2, 64) + " secs ==\n\n")
 	*/
+
+	// vs async
+	// This gives: Duration: 828.66 ms, Billed Duration: 900 ms, Max Memory Used: 42 MB
+	var cpu = make(chan cpuMax)
+	var net = make(chan netPeak)
+	start := time.Now()
+	go func() {
+		cpu <- getCPU(client)
+	}()
+	go func() {
+		net <- getNET(client)
+	}()
+
+	for i := 0; i < 2; i++ {
+		select {
+		case cpures = <-cpu:
+		case netres = <-net:
+		}
+	}
+	elapsed := time.Since(start).Seconds()
+	fmt.Printf("== Took " + strconv.FormatFloat(elapsed, 'f', 2, 64) + " secs ==\n\n")
 
 	resBytes, _ := json.Marshal(body{
 		cpures,
