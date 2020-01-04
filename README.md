@@ -1,4 +1,4 @@
-# Go demo with AWS SDK
+# Go demo with AWS SDK for Lambda
 
 ## What is the repository for?
 #### This is a quick Lambda function PoC to work as REST API with API Gateway for demo and performance comparison reasons.
